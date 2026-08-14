@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 4x1 周视图: 标题 + 星期表头 + 本周 7 天 (环与数字重叠, 与月视图一致的样式) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg_card"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <!-- 标题行: 年月 + 农历 + 周X (与月视图一致) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2026年8月"
+            android:textColor="@color/widget_text_primary"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/widget_lunar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="六月廿三"
+            android:textColor="@color/widget_text_secondary"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/widget_weekday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="周三"
+            android:textColor="@color/widget_accent_text"
+            android:textSize="9sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 星期表头: 一 二 三 四 五 六 日 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView style="@style/WidgetWeekHead" android:text="一" />
+        <TextView style="@style/WidgetWeekHead" android:text="二" />
+        <TextView style="@style/WidgetWeekHead" android:text="三" />
+        <TextView style="@style/WidgetWeekHead" android:text="四" />
+        <TextView style="@style/WidgetWeekHead" android:text="五" />
+        <TextView style="@style/WidgetWeekHead" android:text="六" />
+        <TextView style="@style/WidgetWeekHead" android:text="日" />
+    </LinearLayout>
+
+    <!-- 本周 7 天: FrameLayout 让环与数字重叠居中 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <FrameLayout style="@style/WidgetCell">
+            <ImageView style="@style/WidgetCellRing" android:id="@+id/rg0" />
+            <TextView style="@style/WidgetCellText" android:id="@+id/wd0" android:text="27" />
+        </FrameLayout>
+        <FrameLayout style="@style/WidgetCell">
+            <ImageView style="@style/WidgetCellRing" android:id="@+id/rg1" />
+            <TextView style="@style/WidgetCellText" android:id="@+id/wd1" android:text="28" />
+        </FrameLayout>
+        <FrameLayout style="@style/WidgetCell">
+            <ImageView style="@style/WidgetCellRing" android:id="@+id/rg2" />
+            <TextView style="@style/WidgetCellText" android:id="@+id/wd2" android:text="29" />
+        </FrameLayout>
+        <FrameLayout style="@style/WidgetCell">
+            <ImageView style="@style/WidgetCellRing" android:id="@+id/rg3" />
+            <TextView style="@style/WidgetCellText" android:id="@+id/wd3" android:text="30" />
+        </FrameLayout>
+        <FrameLayout style="@style/WidgetCell">
+            <ImageView style="@style/WidgetCellRing" android:id="@+id/rg4" />
+            <TextView style="@style/WidgetCellText" android:id="@+id/wd4" android:text="31" />
+        </FrameLayout>
+        <FrameLayout style="@style/WidgetCell">
+            <ImageView style="@style/WidgetCellRing" android:id="@+id/rg5" />
+            <TextView style="@style/WidgetCellText" android:id="@+id/wd5" android:text="1" />
+        </FrameLayout>
+        <FrameLayout style="@style/WidgetCell">
+            <ImageView style="@style/WidgetCellRing" android:id="@+id/rg6" />
+            <TextView style="@style/WidgetCellText" android:id="@+id/wd6" android:text="2" />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

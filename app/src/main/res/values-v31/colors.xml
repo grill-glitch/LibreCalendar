@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ (API 31): 动态取色 (Material You, 跟随壁纸) -->
+<resources>
+    <color name="widget_accent">@android:color/system_accent1_600</color>
+    <color name="widget_accent_ring">@android:color/system_accent2_400</color>
+    <color name="widget_accent_text">@android:color/system_accent1_500</color>
+    <color name="widget_on_accent">@android:color/system_accent1_0</color>
+    <color name="widget_card_bg">@android:color/system_neutral1_900</color>
+    <color name="widget_text_primary">@android:color/system_neutral1_100</color>
+    <color name="widget_text_secondary">@android:color/system_neutral1_300</color>
+    <color name="widget_text_dim">@android:color/system_neutral1_500</color>
+    <color name="widget_text_today">@android:color/system_neutral1_0</color>
+    <!-- 今天高亮: primaryContainer(浅) + onPrimaryContainer(深), 与应用内动态取色一致 -->
+    <color name="widget_today_bg">@android:color/system_accent1_100</color>
+    <color name="widget_today_text">@android:color/system_accent1_900</color>
+</resources>

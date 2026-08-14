@@ -60,7 +60,11 @@ class CalendarWidgetConfigureActivity : ComponentActivity() {
 
         setContent {
             CalendarTheme {
+                // 按 provider 判断尺寸: CalendarWidgetProvider=2x1, CalendarWidgetProvider4x2=4x2
+                val info = AppWidgetManager.getInstance(this).getAppWidgetInfo(widgetId)
+                val is2x1 = info?.provider?.className?.contains("4x2") != true
                 WidgetConfigureUi(
+                    is2x1 = is2x1,
                     onSave = { view ->
                         saveView(view)
                         // 更新小组件为所选视图
@@ -83,13 +87,18 @@ class CalendarWidgetConfigureActivity : ComponentActivity() {
 }
 
 @Composable
-private fun WidgetConfigureUi(onSave: (String) -> Unit) {
-    var selected by remember { mutableStateOf("month") }
-    val options = listOf(
-        "month" to "月视图" to "当月网格, 有事件的日期带圆圈",
-        "week" to "周视图" to "本周 7 天, 今天高亮",
-        "day" to "日视图" to "今天日期 + 农历/节日 + 当天事件",
-    )
+private fun WidgetConfigureUi(is2x1: Boolean, onSave: (String) -> Unit) {
+    var selected by remember { mutableStateOf(if (is2x1) "day" else "month") }
+    // 2x1 仅日视图 (空间不足, 不提供月/周); 4x2 支持月/周/日
+    val options = if (is2x1) {
+        listOf("day" to "日视图" to "星期 + 今天日期 + 农历/休班 + 今日事件")
+    } else {
+        listOf(
+            "month" to "月视图" to "当月网格, 有事件的日期带标记, 今天高亮",
+            "week" to "周视图" to "本周 7 天, 今天高亮",
+            "day" to "日视图" to "今天日期 + 农历/节日 + 当天事件",
+        )
+    }
 
     Column(
         Modifier.fillMaxSize().padding(24.dp),
@@ -101,7 +110,7 @@ private fun WidgetConfigureUi(onSave: (String) -> Unit) {
             fontWeight = FontWeight.SemiBold,
         )
         Text(
-            text = "选择小组件显示的视图:",
+            text = if (is2x1) "2x1 小组件固定为日视图:" else "选择小组件显示的视图:",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

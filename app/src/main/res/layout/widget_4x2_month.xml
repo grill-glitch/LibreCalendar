@@ -3,9 +3,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A1A1A"
+    android:background="@drawable/widget_bg_card"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="2026年8月"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/widget_text_primary"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -27,8 +27,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="农历六月廿三"
-            android:textColor="#B3FFFFFF"
+            android:textColor="@color/widget_text_secondary"
             android:textSize="10sp" />
+
+        <!-- 右上角: 当前星期 -->
+        <TextView
+            android:id="@+id/widget_weekday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="周三"
+            android:textColor="@color/widget_accent_text"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 星期表头: 一 二 三 四 五 六 日 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView style="@style/WidgetWeekHead" android:text="一" />
+        <TextView style="@style/WidgetWeekHead" android:text="二" />
+        <TextView style="@style/WidgetWeekHead" android:text="三" />
+        <TextView style="@style/WidgetWeekHead" android:text="四" />
+        <TextView style="@style/WidgetWeekHead" android:text="五" />
+        <TextView style="@style/WidgetWeekHead" android:text="六" />
+        <TextView style="@style/WidgetWeekHead" android:text="日" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,13 +70,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
-            <TextView android:id="@+id/cell00" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell01" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell02" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell03" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell04" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell05" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell06" style="@style/WidgetCell" />
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring00" style="@style/WidgetRing"/><TextView android:id="@+id/cell00" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring01" style="@style/WidgetRing"/><TextView android:id="@+id/cell01" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring02" style="@style/WidgetRing"/><TextView android:id="@+id/cell02" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring03" style="@style/WidgetRing"/><TextView android:id="@+id/cell03" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring04" style="@style/WidgetRing"/><TextView android:id="@+id/cell04" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring05" style="@style/WidgetRing"/><TextView android:id="@+id/cell05" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring06" style="@style/WidgetRing"/><TextView android:id="@+id/cell06" style="@style/WidgetCellText"/></FrameLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/row1"
@@ -58,13 +84,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
-            <TextView android:id="@+id/cell10" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell11" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell12" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell13" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell14" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell15" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell16" style="@style/WidgetCell" />
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring10" style="@style/WidgetRing"/><TextView android:id="@+id/cell10" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring11" style="@style/WidgetRing"/><TextView android:id="@+id/cell11" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring12" style="@style/WidgetRing"/><TextView android:id="@+id/cell12" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring13" style="@style/WidgetRing"/><TextView android:id="@+id/cell13" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring14" style="@style/WidgetRing"/><TextView android:id="@+id/cell14" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring15" style="@style/WidgetRing"/><TextView android:id="@+id/cell15" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring16" style="@style/WidgetRing"/><TextView android:id="@+id/cell16" style="@style/WidgetCellText"/></FrameLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/row2"
@@ -72,13 +98,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
-            <TextView android:id="@+id/cell20" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell21" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell22" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell23" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell24" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell25" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell26" style="@style/WidgetCell" />
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring20" style="@style/WidgetRing"/><TextView android:id="@+id/cell20" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring21" style="@style/WidgetRing"/><TextView android:id="@+id/cell21" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring22" style="@style/WidgetRing"/><TextView android:id="@+id/cell22" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring23" style="@style/WidgetRing"/><TextView android:id="@+id/cell23" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring24" style="@style/WidgetRing"/><TextView android:id="@+id/cell24" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring25" style="@style/WidgetRing"/><TextView android:id="@+id/cell25" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring26" style="@style/WidgetRing"/><TextView android:id="@+id/cell26" style="@style/WidgetCellText"/></FrameLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/row3"
@@ -86,13 +112,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
-            <TextView android:id="@+id/cell30" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell31" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell32" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell33" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell34" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell35" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell36" style="@style/WidgetCell" />
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring30" style="@style/WidgetRing"/><TextView android:id="@+id/cell30" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring31" style="@style/WidgetRing"/><TextView android:id="@+id/cell31" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring32" style="@style/WidgetRing"/><TextView android:id="@+id/cell32" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring33" style="@style/WidgetRing"/><TextView android:id="@+id/cell33" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring34" style="@style/WidgetRing"/><TextView android:id="@+id/cell34" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring35" style="@style/WidgetRing"/><TextView android:id="@+id/cell35" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring36" style="@style/WidgetRing"/><TextView android:id="@+id/cell36" style="@style/WidgetCellText"/></FrameLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/row4"
@@ -100,13 +126,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
-            <TextView android:id="@+id/cell40" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell41" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell42" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell43" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell44" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell45" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell46" style="@style/WidgetCell" />
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring40" style="@style/WidgetRing"/><TextView android:id="@+id/cell40" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring41" style="@style/WidgetRing"/><TextView android:id="@+id/cell41" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring42" style="@style/WidgetRing"/><TextView android:id="@+id/cell42" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring43" style="@style/WidgetRing"/><TextView android:id="@+id/cell43" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring44" style="@style/WidgetRing"/><TextView android:id="@+id/cell44" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring45" style="@style/WidgetRing"/><TextView android:id="@+id/cell45" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring46" style="@style/WidgetRing"/><TextView android:id="@+id/cell46" style="@style/WidgetCellText"/></FrameLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/row5"
@@ -114,13 +140,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
-            <TextView android:id="@+id/cell50" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell51" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell52" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell53" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell54" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell55" style="@style/WidgetCell" />
-            <TextView android:id="@+id/cell56" style="@style/WidgetCell" />
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring50" style="@style/WidgetRing"/><TextView android:id="@+id/cell50" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring51" style="@style/WidgetRing"/><TextView android:id="@+id/cell51" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring52" style="@style/WidgetRing"/><TextView android:id="@+id/cell52" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring53" style="@style/WidgetRing"/><TextView android:id="@+id/cell53" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring54" style="@style/WidgetRing"/><TextView android:id="@+id/cell54" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring55" style="@style/WidgetRing"/><TextView android:id="@+id/cell55" style="@style/WidgetCellText"/></FrameLayout>
+            <FrameLayout style="@style/WidgetCell"><ImageView android:id="@+id/ring56" style="@style/WidgetRing"/><TextView android:id="@+id/cell56" style="@style/WidgetCellText"/></FrameLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

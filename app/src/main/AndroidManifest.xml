@@ -421,7 +421,7 @@
             </intent-filter>
         </receiver>
 
-        <!-- 桌面小组件: 2x1 与 4x2, 添加前经配置页选择月/周/日视图 -->
+        <!-- 桌面小组件: 2x1(日) / 4x1(周) / 4x2(月), 各尺寸视图固定 -->
         <receiver
             android:name=".widget.CalendarWidgetProvider"
             android:exported="false">
@@ -433,6 +433,16 @@
                 android:resource="@xml/calendar_widget_2x1_info" />
         </receiver>
         <receiver
+            android:name=".widget.CalendarWidgetProvider4x1"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calendar_widget_4x1_info" />
+        </receiver>
+        <receiver
             android:name=".widget.CalendarWidgetProvider4x2"
             android:exported="false">
             <intent-filter>
@@ -442,14 +452,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/calendar_widget_4x2_info" />
         </receiver>
-
-        <!-- 小组件配置页: 添加时选择视图类型 -->
-        <activity
-            android:name=".widget.CalendarWidgetConfigureActivity"
-            android:exported="true"
-            android:label="日历小组件"
-            android:theme="@style/Theme.Md3Calendar"
-            android:excludeFromRecents="true" />
 
     </application>
 </manifest>

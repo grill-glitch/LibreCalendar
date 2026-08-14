@@ -10,5 +10,4 @@
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/widget_4x2_month"
-    android:configure="org.librelab.calendar.widget.CalendarWidgetConfigureActivity"
     android:widgetCategory="home_screen" />

@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A1A1A"
+    android:background="@drawable/widget_bg_card"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -13,23 +13,29 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/widget_bigday"
+        <!-- 大日期 + 上方星期标识 -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12"
-            android:textColor="#FFE8B84B"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/widget_weekday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="周三"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp" />
+            <TextView
+                android:id="@+id/widget_weekday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="周三"
+                android:textColor="@color/widget_text_secondary"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/widget_bigday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12"
+                android:textColor="@color/widget_text_primary"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -44,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="农历六月廿三"
-                android:textColor="#B3FFFFFF"
+                android:textColor="@color/widget_text_secondary"
                 android:textSize="10sp" />
 
             <TextView
@@ -52,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#FFE8B84B"
+                android:textColor="@color/widget_accent_text"
                 android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>

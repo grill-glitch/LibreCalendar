@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#6750A4</color>
+    <!-- 小组件强调色: 低版本静态兜底 (Android 12+ 用 values-v31 的动态色覆盖) -->
+    <color name="widget_accent">#FF6750A4</color>
+    <color name="widget_accent_ring">#FF938F99</color>
+    <color name="widget_accent_text">#FFE8B84B</color>
+    <color name="widget_on_accent">#FFFFFFFF</color>
+    <color name="widget_card_bg">#FF1C1B1F</color>
+    <color name="widget_text_primary">#FFE6E0E9</color>
+    <color name="widget_text_secondary">#FFB3AFB8</color>
+    <color name="widget_text_dim">#FF8A868F</color>
+    <color name="widget_text_today">#FFFFFBFE</color>
+    <!-- 今天高亮: 与应用内 primaryContainer/onPrimaryContainer 一致的静态兜底 -->
+    <color name="widget_today_bg">#FFEADDFF</color>
+    <color name="widget_today_text">#FF21005D</color>
+    <!-- 假期/周末红字: 主页 error 暗色动态色 (浅粉红 #FFB4AB) -->
+    <color name="widget_holiday">#FFFFB4AB</color>
 </resources>

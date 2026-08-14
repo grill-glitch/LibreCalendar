@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A1A1A"
+    android:background="@drawable/widget_bg_card"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="8月10日 - 8月16日"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/widget_text_primary"
         android:textSize="13sp"
         android:textStyle="bold" />
 
