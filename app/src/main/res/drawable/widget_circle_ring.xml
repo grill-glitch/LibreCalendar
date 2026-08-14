@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 可染色圆环 (事件日标记): 白色描边 + setColorFilter 染成事件色 -->
+<!-- 可染色圆环 (事件日标记): 白色描边 + setColorFilter 染成事件色; 线宽 1.5dp 与主页面月视图一致 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
     <solid android:color="#00000000" />
     <stroke
-        android:width="3dp"
+        android:width="1.5dp"
         android:color="#FFFFFFFF" />
 </shape>
