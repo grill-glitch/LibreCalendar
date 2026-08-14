@@ -181,6 +181,122 @@ fun SettingsScreen(
                 "尚未同步"
             },
         )
+
+        // ---- 权限与优化 (提醒可靠送达) ----
+        Text(
+            text = "权限与优化",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+        )
+
+        // 通知权限: 提醒通知需要
+        var notificationGranted by remember {
+            mutableStateOf(
+                androidx.core.content.ContextCompat.checkSelfPermission(
+                    context, android.Manifest.permission.POST_NOTIFICATIONS,
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED,
+            )
+        }
+        var notifRequested by remember { mutableStateOf(false) }
+        Row(
+            Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text("通知权限", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = when {
+                        notificationGranted -> "已授予, 可接收事件提醒"
+                        notifRequested -> "已跳转系统设置, 请允许通知后返回"
+                        else -> "用于事件提醒通知"
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (notificationGranted) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            if (notificationGranted) {
+                Text(
+                    text = "✓ 已授予",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            } else if (notifRequested) {
+                Text(
+                    text = "授予成功",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            } else {
+                Button(
+                    onClick = {
+                        val intent = android.content.Intent(
+                            android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS,
+                        ).putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName)
+                        context.startActivity(intent)
+                        // 返回时由 LaunchedEffect 重新检测权限状态
+                        notifRequested = true
+                    },
+                ) { Text("授予") }
+            }
+        }
+
+        // 忽略电池优化: 防止系统休眠杀掉提醒
+        val pm = context.getSystemService(android.content.Context.POWER_SERVICE) as android.os.PowerManager
+        var ignoreBattery by remember {
+            mutableStateOf(pm.isIgnoringBatteryOptimizations(context.packageName))
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text("忽略电池优化", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = if (ignoreBattery) "已开启, 提醒不会被系统休眠拦截"
+                    else "防止系统休眠时提醒不送达",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (ignoreBattery) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            if (ignoreBattery) {
+                Text(
+                    text = "✓ 已开启",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            } else {
+                Button(
+                    onClick = {
+                        // 直接请求 ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS 在部分 ROM 无效,
+                        // 先尝试, 若无法打开则引导到电池优化设置列表
+                        val direct = android.content.Intent(
+                            android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                            android.net.Uri.parse("package:${context.packageName}"),
+                        )
+                        val list = android.content.Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+                        try {
+                            context.startActivity(direct)
+                        } catch (e: android.content.ActivityNotFoundException) {
+                            context.startActivity(list)
+                        }
+                    },
+                ) { Text("开启") }
+            }
+        }
+        // 从系统设置返回后重新检测权限/优化状态
+        androidx.compose.runtime.LaunchedEffect(Unit) {
+            while (true) {
+                kotlinx.coroutines.delay(1000)
+                val granted = androidx.core.content.ContextCompat.checkSelfPermission(
+                    context, android.Manifest.permission.POST_NOTIFICATIONS,
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                if (granted != notificationGranted) notificationGranted = granted
+                val bat = pm.isIgnoringBatteryOptimizations(context.packageName)
+                if (bat != ignoreBattery) ignoreBattery = bat
+            }
+        }
         Spacer(Modifier.height(8.dp))
     }
 }
