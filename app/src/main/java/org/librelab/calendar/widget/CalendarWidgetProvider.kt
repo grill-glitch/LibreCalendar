@@ -145,6 +145,16 @@ open class CalendarWidgetProvider : AppWidgetProvider() {
 
     // ---- 月视图 (4x2): 与应用内一致 — 今天=primaryContainer 浅色圆, 事件日=事件色圆环, 假期红字 ----
 
+    /** 表头农历文本: 农历 + (节日名/班休, 如有), 如 "八月十五 中秋节"、"六月廿三 班" */
+    private fun lunarHeaderText(today: LocalDate): String {
+        val info = CalendarInfo.dayInfo(today)
+        val lunar = "${info.lunarMonthName}${info.lunarDayName}"
+        val holiday = info.holidayNames.ifBlank {
+            if (info.isWorkday) "班" else if (info.isFree) "休" else ""
+        }
+        return if (holiday.isEmpty()) lunar else "$lunar $holiday"
+    }
+
     private fun renderMonth(
         views: RemoteViews,
         today: LocalDate,
@@ -153,7 +163,7 @@ open class CalendarWidgetProvider : AppWidgetProvider() {
         size: String,
     ) {
         views.setTextViewText(R.id.widget_title, "${today.year}年${today.monthValue}月")
-        views.setTextViewText(R.id.widget_lunar, "${CalendarInfo.dayInfo(today).lunarMonthName}${CalendarInfo.dayInfo(today).lunarDayName}")
+        views.setTextViewText(R.id.widget_lunar, lunarHeaderText(today))
         // 右上角星期
         views.setTextViewText(R.id.widget_weekday, "周${"一二三四五六日"[today.dayOfWeek.value - 1]}")
         val first = today.withDayOfMonth(1)
@@ -214,14 +224,14 @@ open class CalendarWidgetProvider : AppWidgetProvider() {
         if (size == "4x1") {
             // 4x1: 标题行 + 与月视图一致的样式 — 今天浅圆, 事件色圆环, 假期红字 (仅本周 7 天)
             views.setTextViewText(R.id.widget_title, "${today.year}年${today.monthValue}月")
-            views.setTextViewText(R.id.widget_lunar, "${CalendarInfo.dayInfo(today).lunarMonthName}${CalendarInfo.dayInfo(today).lunarDayName}")
+            views.setTextViewText(R.id.widget_lunar, lunarHeaderText(today))
             views.setTextViewText(R.id.widget_weekday, "周${"一二三四五六日"[today.dayOfWeek.value - 1]}")
             renderWeekRow(views, monday, today, eventDates, eventDayColors, withWeekName = false)
             return
         }
         // 4x2: 表头与月视图一致 (标题 + 农历 + 右上角星期) + 星期名行 + 7 天
         views.setTextViewText(R.id.widget_title, "${today.year}年${today.monthValue}月")
-        views.setTextViewText(R.id.widget_lunar, "${CalendarInfo.dayInfo(today).lunarMonthName}${CalendarInfo.dayInfo(today).lunarDayName}")
+        views.setTextViewText(R.id.widget_lunar, lunarHeaderText(today))
         views.setTextViewText(R.id.widget_weekday, "周${"一二三四五六日"[today.dayOfWeek.value - 1]}")
         renderWeekRow(views, monday, today, eventDates, eventDayColors, withWeekName = true)
     }
