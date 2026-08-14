@@ -425,7 +425,8 @@
         <!-- 桌面小组件: 2x1(日) / 4x1(周) / 4x2(月), 各尺寸视图固定 -->
         <receiver
             android:name=".widget.CalendarWidgetProvider"
-            android:exported="false">
+            android:exported="false"
+            android:label="@string/widget_day">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -435,7 +436,8 @@
         </receiver>
         <receiver
             android:name=".widget.CalendarWidgetProvider4x1"
-            android:exported="false">
+            android:exported="false"
+            android:label="@string/widget_week">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -445,7 +447,8 @@
         </receiver>
         <receiver
             android:name=".widget.CalendarWidgetProvider4x2"
-            android:exported="false">
+            android:exported="false"
+            android:label="@string/widget_month">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
