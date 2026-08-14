@@ -216,75 +216,57 @@ open class CalendarWidgetProvider : AppWidgetProvider() {
             views.setTextViewText(R.id.widget_title, "${today.year}年${today.monthValue}月")
             views.setTextViewText(R.id.widget_lunar, "${CalendarInfo.dayInfo(today).lunarMonthName}${CalendarInfo.dayInfo(today).lunarDayName}")
             views.setTextViewText(R.id.widget_weekday, "周${"一二三四五六日"[today.dayOfWeek.value - 1]}")
-            for (i in 0..6) {
-                val date = monday.plusDays(i.toLong())
-                val id = weekDayId(i)
-                val ring = weekRingId(i)
-                views.setTextViewText(id, date.dayOfMonth.toString())
-                val isToday = date == today
-                val hasEvent = date in eventDates
-                val isHoliday = !CalendarInfo.dayInfo(date).isWorkday && (
-                    date.dayOfWeek.value == 6 || date.dayOfWeek.value == 7 || CalendarInfo.dayInfo(date).isFree
-                    )
-                when {
-                    isToday -> {
-                        views.setInt(ring, "setImageResource", R.drawable.widget_circle_fill)
-                        views.setInt(ring, "setColorFilter", contextColor(R.color.widget_today_bg))
-                        views.setTextColor(id, contextColor(R.color.widget_today_text))
-                    }
-                    hasEvent -> {
-                        views.setInt(ring, "setImageResource", R.drawable.widget_circle_ring)
-                        views.setInt(ring, "setColorFilter", eventDayColors[date] ?: 0xFFFFFFFF.toInt())
-                        views.setTextColor(id, contextColor(R.color.widget_text_primary))
-                    }
-                    else -> {
-                        views.setInt(ring, "setImageResource", 0)
-                        views.setTextColor(
-                            id,
-                            if (isHoliday) contextColor(R.color.widget_holiday)
-                            else contextColor(R.color.widget_text_primary),
-                        )
-                    }
-                }
-            }
+            renderWeekRow(views, monday, today, eventDates, eventDayColors, withWeekName = false)
             return
         }
-        if (size == "2x1") {
-            for (i in 0..6) {
-                val date = monday.plusDays(i.toLong())
-                val id = weekDayId(i)
-                views.setTextViewText(id, date.dayOfMonth.toString())
-                applyDayStyle(views, id, date, today, eventDates)
-            }
-            return
-        }
-        views.setTextViewText(
-            R.id.widget_title,
-            "${monday.monthValue}月${monday.dayOfMonth}日 - ${monday.plusDays(6).monthValue}月${monday.plusDays(6).dayOfMonth}日",
-        )
-        for (i in 0..6) {
-            val date = monday.plusDays(i.toLong())
-            views.setTextViewText(weekNameId(i), "周${"一二三四五六日"[i]}")
-            val id = weekDayId(i)
-            views.setTextViewText(id, date.dayOfMonth.toString())
-            applyDayStyle(views, id, date, today, eventDates)
-        }
+        // 4x2: 表头与月视图一致 (标题 + 农历 + 右上角星期) + 星期名行 + 7 天
+        views.setTextViewText(R.id.widget_title, "${today.year}年${today.monthValue}月")
+        views.setTextViewText(R.id.widget_lunar, "${CalendarInfo.dayInfo(today).lunarMonthName}${CalendarInfo.dayInfo(today).lunarDayName}")
+        views.setTextViewText(R.id.widget_weekday, "周${"一二三四五六日"[today.dayOfWeek.value - 1]}")
+        renderWeekRow(views, monday, today, eventDates, eventDayColors, withWeekName = true)
     }
 
-    private fun applyDayStyle(views: RemoteViews, id: Int, date: LocalDate, today: LocalDate, eventDates: Set<LocalDate>) {
-        when {
-            date == today -> {
-                // 今天: 浅色圆 (primaryContainer) + 深色数字, 与月视图/主页一致
-                views.setInt(id, "setBackgroundResource", R.drawable.widget_day_today)
-                views.setTextColor(id, contextColor(R.color.widget_today_text))
+    /** 周视图 7 天行: 与月视图完全一致的环/高光/红字逻辑 (ImageView 环 28dp + TextView 数字) */
+    private fun renderWeekRow(
+        views: RemoteViews,
+        monday: LocalDate,
+        today: LocalDate,
+        eventDates: Set<LocalDate>,
+        eventDayColors: Map<LocalDate, Int>,
+        withWeekName: Boolean,
+    ) {
+        for (i in 0..6) {
+            val date = monday.plusDays(i.toLong())
+            val id = weekDayId(i)
+            val ring = weekRingId(i)
+            if (withWeekName) {
+                views.setTextViewText(weekNameId(i), "周${"一二三四五六日"[i]}")
             }
-            date in eventDates -> {
-                views.setInt(id, "setBackgroundResource", R.drawable.widget_day_ring)
-                views.setTextColor(id, contextColor(R.color.widget_text_primary))
-            }
-            else -> {
-                views.setInt(id, "setBackgroundResource", 0)
-                views.setTextColor(id, contextColor(R.color.widget_text_primary))
+            views.setTextViewText(id, date.dayOfMonth.toString())
+            val isToday = date == today
+            val hasEvent = date in eventDates
+            val isHoliday = !CalendarInfo.dayInfo(date).isWorkday && (
+                date.dayOfWeek.value == 6 || date.dayOfWeek.value == 7 || CalendarInfo.dayInfo(date).isFree
+                )
+            when {
+                isToday -> {
+                    views.setInt(ring, "setImageResource", R.drawable.widget_circle_fill)
+                    views.setInt(ring, "setColorFilter", contextColor(R.color.widget_today_bg))
+                    views.setTextColor(id, contextColor(R.color.widget_today_text))
+                }
+                hasEvent -> {
+                    views.setInt(ring, "setImageResource", R.drawable.widget_circle_ring)
+                    views.setInt(ring, "setColorFilter", eventDayColors[date] ?: 0xFFFFFFFF.toInt())
+                    views.setTextColor(id, contextColor(R.color.widget_text_primary))
+                }
+                else -> {
+                    views.setInt(ring, "setImageResource", 0)
+                    views.setTextColor(
+                        id,
+                        if (isHoliday) contextColor(R.color.widget_holiday)
+                        else contextColor(R.color.widget_text_primary),
+                    )
+                }
             }
         }
     }
@@ -303,7 +285,8 @@ open class CalendarWidgetProvider : AppWidgetProvider() {
         val lunar = "${info.lunarMonthName}${info.lunarDayName}"
         val fmt = DateTimeFormatter.ofPattern("HH:mm")
         if (size == "2x1") {
-            // 星期 + 日期 + 农历/休班 + 今日事件 (最多 2 条 + 共 x 个)
+            // 表头 (与月/周视图一致): 年月 + 右上角星期; 下方日期 + 农历/休班 + 今日事件
+            views.setTextViewText(R.id.widget_title, "${today.year}年${today.monthValue}月")
             views.setTextViewText(R.id.widget_weekday, weekday)
             views.setTextViewText(R.id.widget_day, today.dayOfMonth.toString())
             views.setTextViewText(R.id.widget_lunar, lunar)

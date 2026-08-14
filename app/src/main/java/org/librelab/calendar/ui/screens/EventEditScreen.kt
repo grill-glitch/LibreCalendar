@@ -72,6 +72,7 @@ fun EventEditScreen(
     event: CalendarEvent?,
     defaultDate: LocalDate,
     defaultTime: LocalTime,
+    defaultAllDay: Boolean = false,
     onSave: (CalendarEvent) -> Unit,
     onDelete: (Long) -> Unit,
     onClose: () -> Unit,
@@ -80,7 +81,7 @@ fun EventEditScreen(
     var title by remember { mutableStateOf(event?.title ?: "") }
     var description by remember { mutableStateOf(event?.description ?: "") }
     var location by remember { mutableStateOf(event?.location ?: "") }
-    var allDay by remember { mutableStateOf(event?.allDay ?: false) }
+    var allDay by remember { mutableStateOf(event?.allDay ?: defaultAllDay) }
     var repeat by remember { mutableStateOf(RepeatRule.fromName(event?.repeat)) }
     var reminder by remember { mutableStateOf(ReminderOffset.fromMinutes(event?.reminderMinutes ?: 0)) }
     val zone = ZoneId.systemDefault()

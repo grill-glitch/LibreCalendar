@@ -58,7 +58,8 @@ private fun eventTimeText(e: CalendarEvent): String =
     if (e.allDay) "全天"
     else Instant.ofEpochMilli(e.startTime).atZone(ZoneId.systemDefault()).format(TIME_FMT)
 
-/** 周视图: 周切换 + 点选日期 + 该周事件列表 (点击编辑) */
+/** 周视图: 与月视图完全一致 (月份标题/星期表头/今日·选中高光/事件圆环/农历角标/事件卡片),
+ *  仅把网格缩为本周 7 天。点击格子选中 → 下方复用月视图同款事件卡片。 */
 @Composable
 fun WeekScreen(
     selectedDate: LocalDate,
@@ -82,103 +83,91 @@ fun WeekScreen(
     val events by eventsFlow.collectAsState(initial = emptyList())
     val labels by repository.observeLabels().collectAsState(initial = emptyList())
     val labelMap = remember(labels) { org.librelab.calendar.data.EventColors.labelMap(labels) }
-    // 展开重复事件到本周范围
-    val weekEvents = remember(events, monday) {
-        events.flatMap { repository.expandEvent(it, weekStart, weekEnd) }.sortedBy { it.startTime }
+    // 日期 -> 事件颜色 (与月视图 MonthPage 同逻辑: 同日多事件取第一个的颜色)
+    val eventColors: Map<LocalDate, Int> = remember(events, labelMap) {
+        events
+            .map { e ->
+                Instant.ofEpochMilli(e.startTime).atZone(ZoneId.systemDefault()).toLocalDate() to e
+            }
+            .groupBy({ it.first }, { it.second })
+            .mapValues { (_, list) ->
+                org.librelab.calendar.data.EventColors.resolve(list.first(), list.first().labelId?.let { labelMap[it] })
+            }
     }
 
     val today = remember { LocalDate.now() }
+    // 本周每日农历/节假日信息 (与月视图同源)
+    val infos = remember(days) { days.associateWith { CalendarInfo.dayInfo(it) } }
 
     Column(Modifier.fillMaxSize()) {
-        // 周导航
+        // 月份标题 + 切换 (月视图同款: "2026年8月", 左右箭头)
         Row(
-            Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = { weekAnchor = monday.minusDays(7) }) {
                 Icon(Icons.AutoMirrored.Outlined.KeyboardArrowLeft, contentDescription = "上一周")
             }
             Text(
-                text = "${monday.monthValue}月${monday.dayOfMonth}日 - ${monday.plusDays(6).monthValue}月${monday.plusDays(6).dayOfMonth}日",
-                style = MaterialTheme.typography.titleMedium,
+                text = "${monday.year}年${monday.monthValue}月",
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+                modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
             )
             IconButton(onClick = { weekAnchor = monday.plusDays(7) }) {
                 Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = "下一周")
             }
         }
-        // 7 天表头 (点击选中)
+
+        // 星期表头 (月视图同款: 一~日)
+        Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp)) {
+            WEEKDAY_HEADERS.forEach { d ->
+                Text(
+                    text = d,
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+
+        // 本周 7 天 (复用月视图 DayCell: 正方形格子/34dp 圆/1.5dp 事件环/今日·选中高光/农历角标/红字)
         Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp)) {
             days.forEach { d ->
-                val isSelected = d == selectedDate
-                val isToday = d == today
-                Column(
-                    Modifier
-                        .weight(1f)
-                        .padding(2.dp)
-                        .clip(CircleShape)
-                        .clickable { onSelectDate(d) }
-                        .padding(vertical = 4.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = "周${"一二三四五六日"[d.dayOfWeek.value - 1]}",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    // 日期数字: Box 固定尺寸 + Center 对齐, 保证数字严格在圆中心
-                    Box(
-                        Modifier
-                            .size(32.dp)
-                            .clip(CircleShape)
-                            .background(
-                                if (isSelected) MaterialTheme.colorScheme.primary
-                                else Color.Transparent,
-                                CircleShape,
-                            ),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = d.dayOfMonth.toString(),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            color = if (isSelected) MaterialTheme.colorScheme.onPrimary
-                            else MaterialTheme.colorScheme.onSurface,
-                        )
-                    }
-                    Text(
-                        text = if (isToday) "今天" else "",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
+                DayCell(
+                    info = infos[d],
+                    inMonth = d.monthValue == monday.monthValue,
+                    isSelected = d == selectedDate,
+                    isToday = d == today,
+                    eventColor = eventColors[d],
+                    onClick = { onSelectDate(d) },
+                    modifier = Modifier.weight(1f),
+                )
             }
         }
-        // 本周事件列表
-        LazyColumn(Modifier.fillMaxWidth()) {
-            if (weekEvents.isEmpty()) {
-                item {
-                    Text(
-                        text = "本周暂无事件",
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            } else {
-                items(weekEvents, key = { "${it.id}-${it.startTime}" }) { e ->
-                    EventRow(
-                        event = e,
-                        showDate = true,
-                        color = org.librelab.calendar.data.EventColors.resolve(
-                            e, e.labelId?.let { labelMap[it] },
-                        ),
-                        onClick = { onEditEvent(e) },
-                    )
-                }
-            }
+
+        // 选中日期的节假日/农历信息 (月视图同款)
+        infos[selectedDate]?.let { info ->
+            Text(
+                text = buildString {
+                    append("农历${info.lunarMonthName}${info.lunarDayName}")
+                    if (info.solarTerm != null) append(" · ${info.solarTerm}")
+                    if (info.holidayNames.isNotEmpty()) append(" · ${info.holidayNames}")
+                    if (info.isWorkday) append(" · 调休上班")
+                },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
+
+        // 选中日当天的事件卡片 (复用月视图同款: Card + 4dp 色条, 点击编辑)
+        DayEventCards(
+            date = selectedDate,
+            onEditEvent = onEditEvent,
+            modifier = Modifier.weight(1f),
+        )
     }
 }
 

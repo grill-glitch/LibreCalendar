@@ -54,7 +54,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private val WEEKDAY_HEADERS = listOf("一", "二", "三", "四", "五", "六", "日")
+internal val WEEKDAY_HEADERS = listOf("一", "二", "三", "四", "五", "六", "日")
 
 /** 中间锚点页: 前后各留 ~2000 个月的可滑范围 */
 private const val ANCHOR_PAGE = 2000
@@ -178,9 +178,9 @@ fun MonthScreen(
     }
 }
 
-/** 当天事件卡片列表: 撑满剩余高度可上下滑动, 点击卡片进入编辑 */
+/** 当天事件卡片列表: 撑满剩余高度可上下滑动, 点击卡片进入编辑 (周视图复用) */
 @Composable
-private fun DayEventCards(
+internal fun DayEventCards(
     date: LocalDate,
     onEditEvent: (CalendarEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -333,7 +333,7 @@ private fun MonthPage(
 }
 
 @Composable
-private fun DayCell(
+internal fun DayCell(
     info: DayInfo?,
     inMonth: Boolean,
     isSelected: Boolean,

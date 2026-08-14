@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 4x2 周视图: 星期名行 + 7 天数字行 (事件圈/今天高亮) -->
+<!-- 4x2 周视图: 星期名行 + 7 天数字行 (事件圈/今天高亮, 与月视图一致: ImageView 环 + TextView 数字) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,14 +7,41 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/widget_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="8月10日 - 8月16日"
-        android:textColor="@color/widget_text_primary"
-        android:textSize="13sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2026年8月"
+            android:textColor="@color/widget_text_primary"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/widget_lunar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="农历六月廿三"
+            android:textColor="@color/widget_text_secondary"
+            android:textSize="10sp" />
+
+        <!-- 右上角: 当前星期 -->
+        <TextView
+            android:id="@+id/widget_weekday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="周三"
+            android:textColor="@color/widget_accent_text"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,31 +51,52 @@
 
         <LinearLayout style="@style/WidgetWeekCol">
             <TextView android:id="@+id/wn0" style="@style/WidgetWeekName" />
-            <TextView android:id="@+id/wd0" style="@style/WidgetWeekDay" />
+            <FrameLayout style="@style/WidgetCell">
+                <ImageView android:id="@+id/rg0" style="@style/WidgetCellRing" />
+                <TextView android:id="@+id/wd0" style="@style/WidgetCellText" />
+            </FrameLayout>
         </LinearLayout>
         <LinearLayout style="@style/WidgetWeekCol">
             <TextView android:id="@+id/wn1" style="@style/WidgetWeekName" />
-            <TextView android:id="@+id/wd1" style="@style/WidgetWeekDay" />
+            <FrameLayout style="@style/WidgetCell">
+                <ImageView android:id="@+id/rg1" style="@style/WidgetCellRing" />
+                <TextView android:id="@+id/wd1" style="@style/WidgetCellText" />
+            </FrameLayout>
         </LinearLayout>
         <LinearLayout style="@style/WidgetWeekCol">
             <TextView android:id="@+id/wn2" style="@style/WidgetWeekName" />
-            <TextView android:id="@+id/wd2" style="@style/WidgetWeekDay" />
+            <FrameLayout style="@style/WidgetCell">
+                <ImageView android:id="@+id/rg2" style="@style/WidgetCellRing" />
+                <TextView android:id="@+id/wd2" style="@style/WidgetCellText" />
+            </FrameLayout>
         </LinearLayout>
         <LinearLayout style="@style/WidgetWeekCol">
             <TextView android:id="@+id/wn3" style="@style/WidgetWeekName" />
-            <TextView android:id="@+id/wd3" style="@style/WidgetWeekDay" />
+            <FrameLayout style="@style/WidgetCell">
+                <ImageView android:id="@+id/rg3" style="@style/WidgetCellRing" />
+                <TextView android:id="@+id/wd3" style="@style/WidgetCellText" />
+            </FrameLayout>
         </LinearLayout>
         <LinearLayout style="@style/WidgetWeekCol">
             <TextView android:id="@+id/wn4" style="@style/WidgetWeekName" />
-            <TextView android:id="@+id/wd4" style="@style/WidgetWeekDay" />
+            <FrameLayout style="@style/WidgetCell">
+                <ImageView android:id="@+id/rg4" style="@style/WidgetCellRing" />
+                <TextView android:id="@+id/wd4" style="@style/WidgetCellText" />
+            </FrameLayout>
         </LinearLayout>
         <LinearLayout style="@style/WidgetWeekCol">
             <TextView android:id="@+id/wn5" style="@style/WidgetWeekName" />
-            <TextView android:id="@+id/wd5" style="@style/WidgetWeekDay" />
+            <FrameLayout style="@style/WidgetCell">
+                <ImageView android:id="@+id/rg5" style="@style/WidgetCellRing" />
+                <TextView android:id="@+id/wd5" style="@style/WidgetCellText" />
+            </FrameLayout>
         </LinearLayout>
         <LinearLayout style="@style/WidgetWeekCol">
             <TextView android:id="@+id/wn6" style="@style/WidgetWeekName" />
-            <TextView android:id="@+id/wd6" style="@style/WidgetWeekDay" />
+            <FrameLayout style="@style/WidgetCell">
+                <ImageView android:id="@+id/rg6" style="@style/WidgetCellRing" />
+                <TextView android:id="@+id/wd6" style="@style/WidgetCellText" />
+            </FrameLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

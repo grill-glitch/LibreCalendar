@@ -73,6 +73,8 @@ fun CalendarRoot() {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var editing by remember { mutableStateOf<CalendarEvent?>(null) }
     var editingDefaultDate by remember { mutableStateOf(LocalDate.now()) }
+    // FAB 新建时是否默认全天: 日视图 (时间轴) 新建默认具体时间, 其他视图默认全天
+    var editingDefaultAllDay by remember { mutableStateOf(false) }
     var showEditor by remember { mutableStateOf(false) }
     var showLabels by remember { mutableStateOf(false) }
     var showSettings by remember { mutableStateOf(false) }
@@ -123,7 +125,13 @@ fun CalendarRoot() {
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = { editingDefaultDate = selectedDate; editing = null; showEditor = true },
+                onClick = {
+                    editingDefaultDate = selectedDate
+                    // 非日视图新建默认全天 (日视图时间轴选中具体时间)
+                    editingDefaultAllDay = selectedTab != CalendarTab.DAY.ordinal
+                    editing = null
+                    showEditor = true
+                },
                 icon = { Icon(Icons.Outlined.Add, contentDescription = "新建事件") },
                 text = { Text("新建事件") },
                 modifier = Modifier.semantics { contentDescription = "新建事件" },
@@ -212,6 +220,7 @@ fun CalendarRoot() {
                 event = editing,
                 defaultDate = editingDefaultDate,
                 defaultTime = selectedTime,
+                defaultAllDay = editingDefaultAllDay,
                 onSave = ::saveEvent,
                 onDelete = ::deleteEvent,
                 onClose = { showEditor = false },
