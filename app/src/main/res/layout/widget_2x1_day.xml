@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <!-- 表头: 年月 + 右上角星期 (与月/周视图一致) -->
+    <!-- 表头: 年月 + 农历 + 右上角星期 (与月/周视图完全一致) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,15 +20,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="2026年8月"
             android:textColor="@color/widget_text_primary"
             android:textSize="11sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/widget_lunar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="六月廿三"
+            android:textColor="@color/widget_text_secondary"
+            android:textSize="9sp" />
+
+        <TextView
             android:id="@+id/widget_weekday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="周三"
             android:textColor="@color/widget_accent_text"
             android:textSize="9sp"
@@ -65,18 +76,9 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/widget_lunar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="六月廿三"
-                    android:textColor="@color/widget_text_dim"
-                    android:textSize="9sp" />
-
-                <TextView
                     android:id="@+id/widget_workday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
                     android:text=""
                     android:textColor="@color/widget_accent_text"
                     android:textSize="9sp"
