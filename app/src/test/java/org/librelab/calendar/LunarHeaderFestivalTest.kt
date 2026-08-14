@@ -39,6 +39,6 @@ class LunarHeaderFestivalTest {
             if (info.isWorkday) "班" else if (info.isFree) "休" else ""
         }
         println("表头附加: $holiday")
-        assertTrue("10/10 是周六", info.dayOfWeek.value == 6)
+        assertTrue("10/10 是周六", info.date.dayOfWeek.value == 6)
     }
 }
