@@ -25,8 +25,10 @@ object HolidaySettings {
     private fun prefs(context: Context) =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
-    /** 当前提供商; 未设置时按 flavor 默认 (standard=小米, libre=holiday-cn) */
+    /** 当前提供商; 未设置时按 flavor 默认 (standard=小米, libre=holiday-cn)。
+     *  libre 版强制 holiday-cn (不提供小米选项) */
     fun getProvider(context: Context): DataProvider {
+        if (org.librelab.calendar.BuildConfig.LIBRE) return DataProvider.HOLIDAY_CN
         val name = prefs(context).getString(KEY_PROVIDER, null)
         return DataProvider.entries.firstOrNull { it.name == name } ?: defaultProvider()
     }

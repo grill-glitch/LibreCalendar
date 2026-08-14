@@ -77,33 +77,38 @@ fun SettingsScreen(
             TextButton(onClick = onClose) { Text("完成") }
         }
 
-        // ---- 数据源提供商 ----
+        // ---- 数据源提供商 (libre 版仅 holiday-cn, 无小米选项) ----
         Text(
             text = "日历数据源",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
         )
-        DataProvider.entries.forEach { p ->
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                RadioButton(
-                    selected = provider == p,
-                    onClick = { provider = p; saved = false },
-                )
-                Column(Modifier.weight(1f)) {
-                    Text(p.label, style = MaterialTheme.typography.bodyLarge)
-                    Text(
-                        p.desc,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        DataProvider.entries
+            .filter { p ->
+                if (org.librelab.calendar.BuildConfig.LIBRE) p == DataProvider.HOLIDAY_CN
+                else true
+            }
+            .forEach { p ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    RadioButton(
+                        selected = provider == p,
+                        onClick = { provider = p; saved = false },
                     )
+                    Column(Modifier.weight(1f)) {
+                        Text(p.label, style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            p.desc,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
             }
-        }
 
         // ---- 镜像 (仅 holiday-cn) ----
         if (provider == DataProvider.HOLIDAY_CN) {

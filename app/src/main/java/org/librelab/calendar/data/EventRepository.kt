@@ -14,6 +14,8 @@ class EventRepository(private val dao: EventDao, private val labelDao: LabelDao)
 
     fun observeRange(from: Long, to: Long): Flow<List<CalendarEvent>> = dao.observeRange(from, to)
 
+    suspend fun getRange(from: Long, to: Long): List<CalendarEvent> = dao.getRange(from, to)
+
     fun observeAll(): Flow<List<CalendarEvent>> = dao.observeAll()
 
     suspend fun getById(id: Long): CalendarEvent? = dao.getById(id)

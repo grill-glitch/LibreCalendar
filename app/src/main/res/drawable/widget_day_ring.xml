@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 小组件日期数字: 事件圆圈边框 (有事件的日期) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <stroke
+        android:width="2dp"
+        android:color="#FF9FA8DA" />
+    <solid android:color="#00000000" />
+</shape>

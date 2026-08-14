@@ -4,6 +4,10 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 节假日数据源 (小米 API / holiday-cn 镜像) 需要网络; 显式声明, 不依赖依赖库合并 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".CalendarApp"
         android:allowBackup="true"
@@ -11,6 +15,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Md3Calendar">
+
+        <!-- 日期变化时自动更新动态图标 (跨天/改时间/改时区/开机), 图标始终跟随日期 -->
+        <receiver
+            android:name=".DateChangeReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
 
         <!-- 实际入口: 由 31 个动态日期 alias 指向, 自身不提供 launcher 图标 -->
         <activity
@@ -402,6 +420,36 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <!-- 桌面小组件: 2x1 与 4x2, 添加前经配置页选择月/周/日视图 -->
+        <receiver
+            android:name=".widget.CalendarWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calendar_widget_2x1_info" />
+        </receiver>
+        <receiver
+            android:name=".widget.CalendarWidgetProvider4x2"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calendar_widget_4x2_info" />
+        </receiver>
+
+        <!-- 小组件配置页: 添加时选择视图类型 -->
+        <activity
+            android:name=".widget.CalendarWidgetConfigureActivity"
+            android:exported="true"
+            android:label="日历小组件"
+            android:theme="@style/Theme.Md3Calendar"
+            android:excludeFromRecents="true" />
 
     </application>
 </manifest>

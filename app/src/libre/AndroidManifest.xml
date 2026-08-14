@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- libre: 纯本地, 无网络; 移除 WorkManager 带入的网络权限 -->
-    <uses-permission
-        android:name="android.permission.ACCESS_NETWORK_STATE"
-        tools:node="remove" />
+    <!-- libre: 节假日数据走 holiday-cn 开放数据源 (自定义镜像), 需要网络;
+         网络权限已在 main manifest 显式声明, 此处无需额外处理。 -->
 
 </manifest>
